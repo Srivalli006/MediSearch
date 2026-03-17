@@ -1,4 +1,8 @@
 const bcrypt = require('bcryptjs');
+const dns = require('dns');
+
+// Force use Google DNS (8.8.8.8) to resolve Atlas SRV records
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 const User = require('./models/User');
 const Pharmacy = require('./models/Pharmacy');
 const Medicine = require('./models/Medicine');

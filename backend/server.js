@@ -1,5 +1,9 @@
 require('dotenv').config();
 const express = require('express');
+const dns = require('dns');
+
+// Force use Google DNS (8.8.8.8) to resolve Atlas SRV records
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
