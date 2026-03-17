@@ -3,7 +3,7 @@ import { Plus, Package, AlertTriangle, Edit2, Trash2, Search, Loader2, X, FlaskC
 import axios from 'axios';
 import { createPortal } from 'react-dom';
 
-const API = 'http://localhost:5000/api';
+const API = `${import.meta.env.VITE_API_URL}/api`;
 const token = () => localStorage.getItem('token');
 const user  = () => JSON.parse(localStorage.getItem('user') || '{}');
 

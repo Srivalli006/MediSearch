@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Mail, Lock, User as UserIcon, Building2, Shield, ArrowRight, AlertCircle, CheckCircle } from 'lucide-react';
 import axios from 'axios';
 
-const API = 'http://localhost:5000/api';
+const API = `${import.meta.env.VITE_API_URL}/api`;
 
 const Auth = () => {
   const navigate = useNavigate();

@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 
-const API = 'http://localhost:5000/api';
+const API = `${import.meta.env.VITE_API_URL}/api`;
 const authHeader = () => ({ Authorization: `Bearer ${localStorage.getItem('token')}` });
 
 const DEPT_COLORS = {
