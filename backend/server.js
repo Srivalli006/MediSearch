@@ -43,7 +43,11 @@ async function startServer() {
         console.log('✅ Connected to MongoDB successfully');
         connectedToAtlas = true;
       } catch (atlasError) {
-        console.error(`⚠️ Failed to connect to Atlas (${atlasError.message}). Falling back to In-Memory DB.`);
+        console.error('❌ MongoDB Atlas Connection Error Detail:');
+        console.error('Message:', atlasError.message);
+        console.error('Code:', atlasError.code);
+        if (atlasError.reason) console.error('Reason:', atlasError.reason);
+        console.error(`⚠️ Falling back to In-Memory DB.`);
       }
     }
 
