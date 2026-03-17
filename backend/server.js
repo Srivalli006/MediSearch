@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
 const app = express();
@@ -17,6 +18,15 @@ app.use('/api/inventory', require('./routes/inventoryRoutes'));
 app.use('/api/search', require('./routes/searchRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/status', require('./routes/statusRoutes'));
+
+// Serve Static Files for Deployment
+const frontendPath = path.join(__dirname, '../frontend/dist');
+app.use(express.static(frontendPath));
+
+// Catch-all route to serve the frontend's index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'));
+});
 
 const PORT = process.env.PORT || 5000;
 const seedDatabase = require('./seed');

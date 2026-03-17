@@ -7,7 +7,7 @@ import {
 import axios from 'axios';
 import MedicineCard from '../components/MedicineCard';
 
-const API = 'http://localhost:5000/api';
+const API = `${import.meta.env.VITE_API_URL}/api`;
 
 const ShimmerCard = () => (
   <div className="glass-panel shimmer" style={{ height: '240px', borderRadius: 'var(--radius-lg)', opacity: 0.4 }} />
@@ -39,17 +39,18 @@ const Search = () => {
     setLoading(true);
     setSuggestions([]);
     try {
-      let params = { 
-        lat: userLocation?.lat, 
-        lng: userLocation?.lng 
-      };
+      let params = new URLSearchParams({
+        lat: userLocation?.lat || '',
+        lng: userLocation?.lng || ''
+      });
       
-      if (searchMode === 'name') params.query = q;
-      else if (searchMode === 'composition') params.composition = q;
-      else if (searchMode === 'department') params.department = q;
+      if (searchMode === 'name') params.append('query', q);
+      else if (searchMode === 'composition') params.append('composition', q);
+      else if (searchMode === 'department') params.append('department', q);
 
-      const res = await axios.get(`${API}/search`, { params });
-      setResults(res.data);
+      const res = await fetch(`${API}/search?${params.toString()}`);
+      const data = await res.json();
+      setResults(data);
     } catch (err) {
       console.error(err);
     } finally {

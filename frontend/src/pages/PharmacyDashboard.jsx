@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Package, AlertTriangle, Edit2, Trash2, Search, Loader2, X, FlaskConical, AlertCircle, CheckCircle, Building2, RefreshCw } from 'lucide-react';
 import axios from 'axios';
 
-const API = 'http://localhost:5000/api';
+const API = `${import.meta.env.VITE_API_URL}/api`;
 const token = () => localStorage.getItem('token');
 const user  = () => JSON.parse(localStorage.getItem('user') || '{}');
 
