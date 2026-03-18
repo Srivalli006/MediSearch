@@ -380,8 +380,8 @@ const PharmacyDashboard = () => {
 
       {/* Add/Edit Modal */}
       {showAddModal && (
-        <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.6)', zIndex:2000, display:'flex', alignItems:'center', justifyContent:'center', padding:'1rem' }}>
-          <div className="glass-panel" style={{ width:'100%', maxWidth:'480px', padding:'2rem', position:'relative', ...(showMedicineDropdown ? { zIndex: 2001 } : {}) }}>
+        <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.8)', zIndex:2000, display:'flex', alignItems:'center', justifyContent:'center', padding:'1rem', backdropFilter: 'blur(4px)' }}>
+          <div className="glass-panel" style={{ width:'100%', maxWidth:'480px', padding:'2rem', position:'relative', transform: 'translateY(0)', animation: 'fadeIn 0.3s ease-out', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
             <button onClick={()=>{ setShowAddModal(false); setEditItem(null); setMedicineSearchTerm(''); setShowMedicineDropdown(false); }} style={{ position:'absolute', top:'1rem', right:'1rem', background:'none', border:'none', color:'var(--text-secondary)', cursor:'pointer' }}><X size={20}/></button>
             <h2 style={{ margin:'0 0 1.5rem' }}>{editItem ? 'Edit Inventory Item' : 'Add Medicine to Inventory'}</h2>
             <form onSubmit={handleAddOrUpdate} style={{ display:'flex', flexDirection:'column', gap:'1rem' }}>
@@ -495,8 +495,8 @@ const PharmacyDashboard = () => {
 
       {/* Register Pharmacy Modal */}
       {showRegModal && (
-        <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.6)', zIndex:2000, display:'flex', alignItems:'center', justifyContent:'center', padding:'1rem' }}>
-          <div className="glass-panel" style={{ width:'100%', maxWidth:'520px', padding:'2rem', position:'relative' }}>
+        <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.8)', zIndex:2000, display:'flex', alignItems:'center', justifyContent:'center', padding:'1rem', backdropFilter: 'blur(4px)' }}>
+          <div className="glass-panel" style={{ width:'100%', maxWidth:'520px', padding:'2rem', position:'relative', transform: 'translateY(0)', animation: 'fadeIn 0.3s ease-out', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
             <button onClick={()=>setShowRegModal(false)} style={{ position:'absolute', top:'1rem', right:'1rem', background:'none', border:'none', color:'var(--text-secondary)', cursor:'pointer' }}><X size={20}/></button>
             <div style={{ display:'flex', alignItems:'center', gap:'0.75rem', marginBottom:'0.5rem' }}>
               <Building2 size={24} color="var(--primary)"/>

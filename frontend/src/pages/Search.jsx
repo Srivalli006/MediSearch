@@ -93,9 +93,29 @@ const Search = () => {
 
   const getSortedResults = () => {
     let sorted = [...results];
-    if (sortBy === 'price_low') sorted.sort((a, b) => a.price - b.price);
-    else if (sortBy === 'price_high') sorted.sort((a, b) => b.price - a.price);
-    else if (sortBy === 'distance') sorted.sort((a, b) => (a.distanceKm ?? 9999) - (b.distanceKm ?? 9999));
+    
+    // Always prioritize relevance first (so searched item is at the beginning)
+    sorted.sort((a, b) => (b.relevanceScore || 0) - (a.relevanceScore || 0));
+
+    // Then apply secondary user-selected sort within same relevance groups if needed, 
+    // but the prompt says specifically "one that the user search should be at the beginning".
+    // So we'll keep relevance as the primary key.
+    if (sortBy === 'price_low') {
+      sorted.sort((a, b) => {
+        if (a.relevanceScore !== b.relevanceScore) return b.relevanceScore - a.relevanceScore;
+        return a.price - b.price;
+      });
+    } else if (sortBy === 'price_high') {
+      sorted.sort((a, b) => {
+        if (a.relevanceScore !== b.relevanceScore) return b.relevanceScore - a.relevanceScore;
+        return b.price - a.price;
+      });
+    } else if (sortBy === 'distance') {
+      sorted.sort((a, b) => {
+        if (a.relevanceScore !== b.relevanceScore) return b.relevanceScore - a.relevanceScore;
+        return (a.distanceKm ?? 9999) - (b.distanceKm ?? 9999);
+      });
+    }
     return sorted;
   };
 

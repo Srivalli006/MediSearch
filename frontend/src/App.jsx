@@ -15,7 +15,7 @@ function App() {
     <Router>
     <div className="app-container" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Navbar />
-      <main className="animate-fade-in" style={{ flex: 1, display: 'flex', flexDirection: 'column', marginTop: '70px' }}>
+      <main style={{ flex: 1, display: 'flex', flexDirection: 'column', marginTop: '70px' }}>
           <Routes>
             <Route path="/"                   element={<Home />} />
             <Route path="/auth"               element={<Auth />} />

@@ -111,7 +111,8 @@ router.get('/', async (req, res) => {
         if (medName === lowerQuery) relevanceScore = 1000; // Super high for exact name match
         else if (medName.startsWith(lowerQuery)) relevanceScore = 500;
         else if (medName.includes(lowerQuery)) relevanceScore = 100;
-        else if (item.medicineId.composition.some(c => c.toLowerCase().includes(lowerQuery))) relevanceScore = 50;
+        else if (item.medicineId.composition && item.medicineId.composition.some(c => c.toLowerCase().includes(lowerQuery))) relevanceScore = 50;
+        else relevanceScore = 10; // Base score for "similar" results via shared composition or dept
 
         return {
           inventoryId:      item._id,
@@ -140,7 +141,7 @@ router.get('/', async (req, res) => {
         };
       });
 
-    // Sort by relevance first, then distance
+    // Sort by relevance first (exact matches), then distance
     results.sort((a, b) => {
       if (b.relevanceScore !== a.relevanceScore) {
         return b.relevanceScore - a.relevanceScore;
