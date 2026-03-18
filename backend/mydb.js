@@ -4,7 +4,7 @@ const dns = require('dns');
 // Force use Google DNS (8.8.8.8) to resolve Atlas SRV records
 dns.setServers(['8.8.8.8', '8.8.4.4']);
 
-const MONGO_URI = "mongodb+srv://clusteruser:cluster%40123@cluster0.j416xnc.mongodb.net/test?retryWrites=true&w=majority";
+const MONGO_URI = "mongodb+srv://clusteruser:cluster%40123@cluster0.j416xnc.mongodb.net/medicine_availability_finder?retryWrites=true&w=majority";
 
 const startServer = async () => {
     try {
