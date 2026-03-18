@@ -7,7 +7,10 @@ const User = require('./models/User');
 const Pharmacy = require('./models/Pharmacy');
 const Medicine = require('./models/Medicine');
 const Inventory = require('./models/Inventory');
+const mongoose = require('mongoose');
 const medicineCatalog = require('./medicine_catalog');
+
+const MONGODB_URI = process.env.MONGODB_URI;
 
 const seedDatabase = async () => {
   try {
@@ -74,3 +77,25 @@ const seedDatabase = async () => {
 };
 
 module.exports = seedDatabase;
+
+if (require.main === module) {
+  require('dotenv').config();
+  (async () => {
+    try {
+      if (MONGODB_URI) {
+        console.log('Connecting to MongoDB Atlas...');
+        await mongoose.connect(MONGODB_URI);
+      } else {
+        console.log('No MONGODB_URI found, using local fallback...');
+        const { MongoMemoryServer } = require('mongodb-memory-server');
+        const mongod = await MongoMemoryServer.create();
+        await mongoose.connect(mongod.getUri());
+      }
+      await seedDatabase();
+      process.exit(0);
+    } catch (err) {
+      console.error('Standalone seeding failed:', err);
+      process.exit(1);
+    }
+  })();
+}

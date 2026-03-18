@@ -10,16 +10,27 @@ const medicineSchema = new mongoose.Schema({
   name:               { type: String, required: true },
   description:        { type: String, default: '' },
   manufacturer:       { type: String, default: '' },
-  // Composition Module
-  composition:        { type: [String], default: [] },  // e.g. ['Paracetamol 500mg', 'Caffeine 30mg']
-  // Description Module extras
-  usageInstructions:  { type: String, default: '' },
-  sideEffects:        { type: String, default: '' },
-  // Department Module
-  department: {
-    type: String,
-    enum: DEPARTMENTS,
-    default: 'General'
+  // Detailed Composition (Detailed ingredients module)
+  detailedComposition: [{
+    ingredient: { type: String, required: true },
+    quantity:   { type: Number, required: true },
+    unit:       { type: String, required: true },
+    howToUse:   { type: String },
+    sideEffects: { type: String },
+    precautions: { type: String },
+    interactions: { type: String },
+    storage:    { type: String }
+  }],
+  clinicalOverview: {
+    uses: { type: String },
+    mechanism: { type: String },
+    contraindications: { type: String },
+    sideEffects: { type: String },
+    precautions: { type: String },
+    pregnancyCategory: { type: String },
+    alcoholWarning: { type: String },
+    drivingWarning: { type: String },
+    lactationWarning: { type: String }
   },
   createdAt:          { type: Date, default: Date.now }
 });

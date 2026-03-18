@@ -86,7 +86,7 @@ router.get('/', async (req, res) => {
       stockQuantity: { $gt: 0 }
     })
       .populate('pharmacyId', 'name address contactNumber location isVerified')
-      .populate('medicineId', 'name description manufacturer composition department usageInstructions sideEffects');
+      .populate('medicineId', 'name description manufacturer composition department usageInstructions sideEffects detailedComposition clinicalOverview');
 
     // Format + calculate distance
     const userLat = lat ? parseFloat(lat) : null;
@@ -121,6 +121,7 @@ router.get('/', async (req, res) => {
           manufacturer:     item.medicineId.manufacturer,
           composition:      item.medicineId.composition,
           detailedComposition: item.medicineId.detailedComposition,
+          clinicalOverview: item.medicineId.clinicalOverview,
           department:       item.medicineId.department,
           usageInstructions: item.medicineId.usageInstructions,
           sideEffects:      item.medicineId.sideEffects,
@@ -200,6 +201,8 @@ router.post('/catalog', async (req, res) => {
     const newMed = await Medicine.create({
       name, description, manufacturer,
       composition: Array.isArray(composition) ? composition : (composition ? [composition] : []),
+      detailedComposition: req.body.detailedComposition || [],
+      clinicalOverview: req.body.clinicalOverview || {},
       department: department || 'General',
       usageInstructions: usageInstructions || '',
       sideEffects: sideEffects || ''
