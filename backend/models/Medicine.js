@@ -10,6 +10,8 @@ const medicineSchema = new mongoose.Schema({
   name:               { type: String, required: true },
   description:        { type: String, default: '' },
   manufacturer:       { type: String, default: '' },
+  composition:        [String],
+  department:         { type: String, default: 'General' },
   // Detailed Composition (Detailed ingredients module)
   detailedComposition: [{
     ingredient: { type: String, required: true },

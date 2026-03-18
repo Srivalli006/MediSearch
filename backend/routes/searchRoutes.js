@@ -41,14 +41,17 @@ router.get('/', async (req, res) => {
         ]
       });
 
-      // Extract all compositions from those matches
+      // Extract all compositions and departments from those matches
       const allCompositions = new Set();
+      const allDepartments = new Set();
       initialMatches.forEach(m => {
         (m.composition || []).forEach(c => allCompositions.add(c));
+        if (m.department) allDepartments.add(m.department);
       });
 
-      // Build the final query: either matches name/composition loosely, OR shares an exact composition 
+      // Build the final query: name/composition loosely, share an exact composition, OR share a department
       const compArray = Array.from(allCompositions);
+      const deptArray = Array.from(allDepartments);
       const orConditions = [
         { name: { $regex: q, $options: 'i' } },
         { composition: { $regex: q, $options: 'i' } }
@@ -56,6 +59,9 @@ router.get('/', async (req, res) => {
       
       if (compArray.length > 0) {
         orConditions.push({ composition: { $in: compArray } });
+      }
+      if (deptArray.length > 0) {
+        orConditions.push({ department: { $in: deptArray } });
       }
 
       filter.$or = orConditions;
