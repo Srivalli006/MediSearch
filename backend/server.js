@@ -1,4 +1,4 @@
-require('dotenv').config({ path: './backend/.env' });
+require('dotenv').config({ path: require('path').join(__dirname, '.env') });
 const express = require('express');
 const dns = require('dns');
 
