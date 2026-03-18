@@ -147,12 +147,17 @@ router.get('/', async (req, res) => {
         };
       });
 
-    // Sort by relevance first (exact matches), then distance
+    // Sort by relevance first (exact matches), then distance (proximity)
     results.sort((a, b) => {
-      if (b.relevanceScore !== a.relevanceScore) {
+      // If relevance is significantly different, use it (e.g. 1000 vs 50)
+      if (Math.abs(b.relevanceScore - a.relevanceScore) > 100) {
         return b.relevanceScore - a.relevanceScore;
       }
-      return (a.distanceKm ?? 9999) - (b.distanceKm ?? 9999);
+      // Otherwise, within similar relevance tiers (e.g. all composition matches), show NEAREST first
+      if (a.distanceKm !== null && b.distanceKm !== null) {
+        if (a.distanceKm !== b.distanceKm) return a.distanceKm - b.distanceKm;
+      }
+      return b.relevanceScore - a.relevanceScore;
     });
 
     // Log the search for department analytics

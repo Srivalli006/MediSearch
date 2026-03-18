@@ -24,6 +24,7 @@ const Search = () => {
   const [sortBy, setSortBy] = useState('distance'); // distance, price_low, price_high
   const [locationEnabled, setLocationEnabled] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
+  const [currentAddress, setCurrentAddress] = useState('');
 
   // Load departments
   const [departments, setDepartments] = useState([]);
@@ -79,9 +80,22 @@ const Search = () => {
   const toggleLocation = () => {
     if (!locationEnabled) {
       navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        async (pos) => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          setUserLocation({ lat, lng });
           setLocationEnabled(true);
+          
+          // Reverse geocode to show human-readable location
+          try {
+            const res = await axios.get(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`);
+            if (res.data && res.data.display_name) {
+              const parts = res.data.display_name.split(',');
+              setCurrentAddress(parts[0] + (parts[1] ? ', ' + parts[1] : ''));
+            }
+          } catch (err) {
+            setCurrentAddress(`${lat.toFixed(4)}, ${lng.toFixed(4)}`);
+          }
         },
         () => alert("Please enable location permissions in your browser.")
       );
@@ -217,6 +231,17 @@ const Search = () => {
           </div>
 
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+            {locationEnabled && currentAddress && (
+              <div style={{ 
+                display: 'flex', alignItems: 'center', gap: '0.5rem', 
+                padding: '0.4rem 1rem', background: 'rgba(16,185,129,0.1)', 
+                color: 'var(--secondary)', borderRadius: 'var(--radius-full)', 
+                border: '1px solid rgba(16,185,129,0.2)', fontSize: '0.85rem' 
+              }}>
+                <MapPin size={14} /> {currentAddress}
+              </div>
+            )}
+
             <div style={{ display: 'flex', background: 'rgba(255,255,255,0.03)', padding: '0.4rem', borderRadius: 'var(--radius-full)', border: '1px solid rgba(255,255,255,0.08)' }}>
               <button onClick={() => setSortBy('distance')} className={`filter-chip ${sortBy === 'distance' ? 'active' : ''}`} style={{ padding: '0.4rem 1rem' }}>Distance</button>
               <button onClick={() => setSortBy('price_low')} className={`filter-chip ${sortBy === 'price_low' ? 'active' : ''}`} style={{ padding: '0.4rem 1rem' }}>Price ↑</button>
