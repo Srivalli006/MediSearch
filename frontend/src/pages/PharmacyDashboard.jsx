@@ -215,26 +215,6 @@ const PharmacyDashboard = () => {
         </div>
       )}
 
-      {/* DB Status Banner */}
-      {dbStatus.dbStatus === 'In-Memory' && (
-        <div style={{ 
-          background: 'rgba(245, 158, 11, 0.1)', 
-          border: '1px solid rgba(245, 158, 11, 0.3)', 
-          color: '#F59E0B', 
-          padding: '1rem 1.5rem', 
-          borderRadius: 'var(--radius-md)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '1rem',
-          backdropFilter: 'blur(10px)'
-        }}>
-          <AlertTriangle size={20} />
-          <div>
-            <strong style={{ display: 'block' }}>Local Persistence Mode: In-Memory</strong>
-            <span style={{ fontSize: '0.85rem' }}>The server could not connect to MongoDB Atlas. Data you add will be lost when the server restarts. <a href="#" onClick={(e) => { e.preventDefault(); alert("To fix this, please whitelist your current IP address in the MongoDB Atlas Network Access settings."); }} style={{ color: '#F59E0B', textDecoration: 'underline' }}>How to fix?</a></span>
-          </div>
-        </div>
-      )}
 
       {/* Header */}
       <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', flexWrap:'wrap', gap:'1rem' }}>
